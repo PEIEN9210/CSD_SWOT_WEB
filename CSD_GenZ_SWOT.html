@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSD × Z世代 SWOT 策略矩陣</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@300;400;500;700;900&family=DM+Mono:ital,wght@0,300;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #0e1514;
+    --paper:  #f0ede6;
+    --teal:   #0d7b7f;
+    --lteal:  #1aa8ad;
+    --mint:   #7dd4d0;
+    --pink:   #c05878;
+    --gold:   #c49220;
+    --lgold:  #f0c84a;
+    --indigo: #3b4a82;
+    --green:  #2a6b3e;
+    --fog:    #e4e0d8;
+    --red:    #b83030;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── NOISE TEXTURE ──────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.35;
+  }
+
+  /* ── HERO ───────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(2rem, 5vw, 4rem);
+    background: var(--ink);
+    overflow: hidden;
+  }
+
+  .hero-deco {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-deco-1 { width: 60vw; height: 60vw; top: -20vw; right: -15vw; background: radial-gradient(circle, #1aa8ad22, transparent 65%); animation: pulse 8s ease-in-out infinite; }
+  .hero-deco-2 { width: 40vw; height: 40vw; bottom: -10vw; left: -8vw; background: radial-gradient(circle, #c0587830, transparent 60%); animation: pulse 10s ease-in-out infinite reverse; }
+  .hero-deco-3 { width: 25vw; height: 25vw; top: 30%; left: 35%; background: radial-gradient(circle, #c4922025, transparent 60%); animation: pulse 12s ease-in-out infinite; }
+
+  @keyframes pulse { 0%,100%{transform:scale(1) translate(0,0)} 50%{transform:scale(1.08) translate(2%,1.5%)} }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+    color: var(--mint);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 10rem);
+    line-height: 0.9;
+    color: #f0ede6;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s forwards;
+  }
+  .hero-title span { color: var(--lteal); }
+  .hero-title em   { color: var(--gold); font-style: normal; }
+
+  .hero-sub {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.55s forwards;
+  }
+  .hero-sub p {
+    font-size: clamp(0.85rem, 1.6vw, 1rem);
+    color: #8aadad;
+    max-width: 38ch;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .hero-tags {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink);
+    background: var(--mint);
+    padding: 0.25rem 0.65rem;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 1s forwards;
+  }
+  .hero-scroll span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: #4a6868;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 5rem;
+    background: linear-gradient(to bottom, #4a6868, transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+
+  /* ── TARGET INSIGHT STRIP ───────────────────── */
+  .insight-strip {
+    background: var(--lteal);
+    padding: 3rem clamp(2rem, 5vw, 4rem);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 2rem;
+  }
+  .insight-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .insight-item.visible { opacity: 1; transform: none; }
+  .insight-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: var(--paper);
+    line-height: 1;
+  }
+  .insight-num em { color: var(--lgold); font-style: normal; font-size: 0.55em; vertical-align: super; }
+  .insight-label {
+    font-size: 0.8rem;
+    color: rgba(240,237,230,0.75);
+    margin-top: 0.4rem;
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── SECTION ────────────────────────────────── */
+  .section {
+    padding: clamp(3rem, 7vw, 6rem) clamp(2rem, 5vw, 4rem);
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.6rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .section-label.visible { opacity: 1; transform: none; }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.6s 0.1s, transform 0.6s 0.1s;
+  }
+  .section-title.visible { opacity: 1; transform: none; }
+
+  /* ── Z-GEN PROFILE ──────────────────────────── */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  @media(max-width:680px){ .profile-grid { grid-template-columns: 1fr; } }
+
+  .profile-card {
+    border: 1px solid rgba(14,21,20,0.12);
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--fog);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .profile-card.visible { opacity: 1; transform: none; }
+  .profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--card-accent, var(--teal));
+  }
+  .profile-card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+  }
+  .profile-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: var(--card-accent, var(--teal));
+    margin-bottom: 0.5rem;
+  }
+  .profile-card-body {
+    font-size: 0.88rem;
+    line-height: 1.75;
+    color: #3a4a4a;
+    font-weight: 300;
+  }
+  .profile-card-body strong { font-weight: 700; color: var(--ink); }
+
+  /* ── SWOT MATRIX ────────────────────────────── */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 2.5rem;
+    border: 2px solid var(--ink);
+  }
+  @media(max-width:640px){ .swot-grid { grid-template-columns: 1fr; } }
+
+  .swot-cell {
+    padding: 2.2rem;
+    position: relative;
+    border: 1px solid rgba(14,21,20,0.15);
+    opacity: 0;
+    transform: scale(0.97);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .swot-cell.visible { opacity: 1; transform: none; }
+
+  .swot-cell:hover { z-index: 2; }
+  .swot-cell:hover .swot-list li::before { transform: scaleX(1); }
+
+  .swot-S { background: #e8f4f2; }
+  .swot-W { background: #fdf0f4; }
+  .swot-O { background: #f0f5e8; }
+  .swot-T { background: #fdf5e8; }
+
+  .swot-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .swot-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 0.85;
+    color: var(--cell-color);
+    opacity: 0.18;
+    position: absolute;
+    right: 1.2rem;
+    top: 1rem;
+    pointer-events: none;
+  }
+  .swot-badge {
+    background: var(--cell-color);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    padding: 0.3rem 0.7rem;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .swot-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+    color: var(--cell-color);
+    margin-top: 0.2rem;
+  }
+  .swot-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .swot-list li {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #2a3a3a;
+    font-weight: 400;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .swot-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    background: var(--cell-color);
+    border-radius: 50%;
+  }
+  .swot-list li strong {
+    font-weight: 700;
+    color: var(--ink);
+    display: block;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+  }
+  .swot-list li span {
+    font-weight: 300;
+    font-size: 0.82rem;
+    color: #5a6a6a;
+  }
+
+  /* ── AXIS LABELS ────────────────────────────── */
+  .swot-axis-wrap {
+    position: relative;
+    margin-top: 2.5rem;
+  }
+  .axis-label-x, .axis-label-y {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+  .axis-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+    padding: 0 0.5rem;
+  }
+  .axis-col-wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+  }
+  .swot-quadrant-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: #8aadad;
+    letter-spacing: 0.12em;
+    text-align: center;
+    flex: 1;
+  }
+
+  /* ── STRATEGY MATRIX ────────────────────────── */
+  .strategy-section { background: var(--ink); }
+  .strategy-section .section-label { color: var(--mint); }
+  .strategy-section .section-title { color: var(--paper); }
+
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    margin-top: 2.5rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .strategy-card {
+    background: var(--ink);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.35s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s, background 0.35s;
+  }
+  .strategy-card.visible { opacity: 1; transform: none; }
+  .strategy-card:hover { background: var(--card-bg, #111e1e); }
+
+  .strategy-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px; width: 0%;
+    background: var(--card-accent, var(--teal));
+    transition: width 0.4s ease;
+  }
+  .strategy-card:hover::after { width: 100%; }
+
+  .strategy-type {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .strategy-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--card-accent, var(--teal));
+    flex-shrink: 0;
+  }
+  .strategy-type-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--card-accent, var(--teal));
+    text-transform: uppercase;
+  }
+  .strategy-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    color: var(--paper);
+    margin-bottom: 1rem;
+    line-height: 1.15;
+  }
+  .strategy-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .strategy-items li {
+    font-size: 0.82rem;
+    color: rgba(240,237,230,0.65);
+    font-weight: 300;
+    line-height: 1.6;
+    padding-left: 0.9rem;
+    position: relative;
+  }
+  .strategy-items li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--card-accent, var(--teal));
+    font-size: 0.7rem;
+  }
+  .strategy-items li strong {
+    color: var(--paper);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .strategy-sdg {
+    margin-top: 1.4rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .sdg-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    background: rgba(255,255,255,0.06);
+    color: rgba(240,237,230,0.45);
+    padding: 0.2rem 0.5rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ── PRIORITY ROADMAP ───────────────────────── */
+  .roadmap-section { background: var(--fog); }
+  .roadmap-timeline {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .roadmap-item {
+    display: grid;
+    grid-template-columns: 80px 2px 1fr;
+    gap: 0 1.5rem;
+    align-items: stretch;
+    opacity: 0;
+    transform: translateX(-15px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .roadmap-item.visible { opacity: 1; transform: none; }
+
+  .roadmap-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    padding-top: 1.5rem;
+    text-align: right;
+  }
+  .roadmap-line-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .roadmap-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--item-color, var(--teal));
+    flex-shrink: 0;
+    margin-top: 1.55rem;
+    border: 3px solid var(--fog);
+    box-shadow: 0 0 0 2px var(--item-color, var(--teal));
+    z-index: 1;
+  }
+  .roadmap-connector {
+    flex: 1;
+    width: 2px;
+    background: rgba(14,21,20,0.12);
+  }
+  .roadmap-item:last-child .roadmap-connector { display: none; }
+  .roadmap-content {
+    padding: 1.2rem 0 2rem;
+  }
+  .roadmap-phase {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--item-color, var(--teal));
+    margin-bottom: 0.3rem;
+  }
+  .roadmap-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+  .roadmap-body {
+    font-size: 0.85rem;
+    color: #3a5050;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+  .roadmap-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.7rem;
+  }
+  .roadmap-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    background: var(--item-color, var(--teal));
+    color: white;
+    padding: 0.2rem 0.55rem;
+  }
+
+  /* ── FOOTER ─────────────────────────────────── */
+  footer {
+    background: var(--ink);
+    padding: 2.5rem clamp(2rem, 5vw, 4rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: rgba(240,237,230,0.3);
+    text-transform: uppercase;
+  }
+  footer span { color: var(--mint); }
+
+  /* ── ANIMATIONS ─────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── DIVIDER ─────────────────────────────────── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(14,21,20,0.15), transparent);
+    margin: 0 clamp(2rem, 5vw, 4rem);
+  }
+
+  /* ── BOLD QUOTE ──────────────────────────────── */
+  .pull-quote {
+    background: var(--lteal);
+    padding: 3rem clamp(2rem, 5vw, 4rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .pull-quote::before {
+    content: '"';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20rem;
+    color: rgba(255,255,255,0.06);
+    position: absolute;
+    top: -3rem;
+    left: 1rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .pull-quote blockquote {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    color: white;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+  }
+  .pull-quote cite {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.2em;
+    margin-top: 1.2rem;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb { background: var(--teal); }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-deco hero-deco-1"></div>
+  <div class="hero-deco hero-deco-2"></div>
+  <div class="hero-deco hero-deco-3"></div>
+
+  <p class="hero-eyebrow">CSD LAB × Gen Z Strategy ／ 2027 Brand Proposal</p>
+
+  <h1 class="hero-title">
+    <span>Z 世代</span><br>
+    SWOT<br>
+    <em>策略矩陣</em>
+  </h1>
+
+  <div class="hero-sub">
+    <div>
+      <p>針對 18–30 歲 Z 世代核心族群，解析 CSD 中衛在此市場的優劣勢、機會與威脅，並推導四象限策略行動方案。</p>
+      <div class="hero-tags">
+        <span class="hero-tag">18–30 歲</span>
+        <span class="hero-tag">Z 世代</span>
+        <span class="hero-tag">Health in Style</span>
+        <span class="hero-tag">CSD LAB 快閃店</span>
+        <span class="hero-tag">SDG × ESG</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ INSIGHT STRIP ══════════════════════════════════ -->
+<div class="insight-strip">
+  <div class="insight-item">
+    <div class="insight-num">480<em>萬</em></div>
+    <div class="insight-label">台灣 18–30 歲人口<br>佔總人口約 20%</div>
+  </div>
+  <div class="insight-item">
+    <div class="insight-num">78<em>%</em></div>
+    <div class="insight-label">Z 世代願意為<br>認同品牌價值加價購買</div>
+  </div>
+  <div class="insight-item">
+    <div class="insight-num">4.2<em>hr</em></div>
+    <div class="insight-label">每日社群媒體使用時數<br>（IG、TikTok、YouTube 主力）</div>
+  </div>
+  <div class="insight-item">
+    <div class="insight-num">64<em>%</em></div>
+    <div class="insight-label">Z 世代在購買前<br>會查詢品牌 ESG 立場</div>
+  </div>
+  <div class="insight-item">
+    <div class="insight-num">91<em>%</em></div>
+    <div class="insight-label">Z 世代認為健康<br>是生活優先級 Top 3</div>
+  </div>
+</div>
+
+<!-- ══ Z-GEN PROFILE ══════════════════════════════════ -->
+<section class="section">
+  <p class="section-label">Target Audience / 目標受眾側寫</p>
+  <h2 class="section-title">WHO IS<br>GEN Z？</h2>
+
+  <div class="profile-grid">
+    <div class="profile-card" style="--card-accent: var(--teal);">
+      <div class="profile-card-icon">🎨</div>
+      <div class="profile-card-title">美感消費者</div>
+      <div class="profile-card-body">
+        Z 世代是台灣第一批<strong>「美感原生」</strong>世代，從小被 IG、Pinterest 審美薰陶。他們的口罩不只是防護工具，更是<strong>個人風格的延伸</strong>——品牌色彩力直接決定是否被看見與被選擇。
+      </div>
+    </div>
+
+    <div class="profile-card" style="--card-accent: var(--pink);">
+      <div class="profile-card-icon">🧠</div>
+      <div class="profile-card-title">心理健康意識世代</div>
+      <div class="profile-card-body">
+        高壓學業、就業壓力與 FOMO 焦慮交織，Z 世代是台灣<strong>心理諮商需求成長最快</strong>的族群。他們渴望「被看見」與「被理解」，品牌若能提供情緒出口，將建立深度連結。
+      </div>
+    </div>
+
+    <div class="profile-card" style="--card-accent: var(--gold);">
+      <div class="profile-card-icon">♻️</div>
+      <div class="profile-card-title">永續價值驅動者</div>
+      <div class="profile-card-body">
+        Z 世代是最積極的<strong>環保意識實踐者</strong>，他們不只是「說說而已」——會主動查詢品牌碳足跡、包材是否可回收。ESG 不再是加分項，而是<strong>品牌進入門票</strong>。
+      </div>
+    </div>
+
+    <div class="profile-card" style="--card-accent: var(--indigo);">
+      <div class="profile-card-icon">📱</div>
+      <div class="profile-card-title">數位原生 × 體驗至上</div>
+      <div class="profile-card-body">
+        Z 世代在線上消費前高度依賴 KOL、UGC 與真實評論，但同時渴望<strong>可分享的線下體驗</strong>。「值得拍」「值得說」的時刻是他們最強的購買觸發器。
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SWOT MATRIX ══════════════════════════════════ -->
+<section class="section">
+  <p class="section-label">SWOT Analysis / 優劣機威分析</p>
+  <h2 class="section-title">SWOT<br>矩陣</h2>
+
+  <div style="margin-top:1rem; display:flex; gap:1.5rem; flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:0.4rem"><span style="display:inline-block;width:10px;height:10px;background:var(--teal);border-radius:50%"></span><span style="font-size:0.75rem;color:var(--teal);font-family:'DM Mono',monospace;letter-spacing:0.1em">內部因素</span></div>
+    <div style="display:flex;align-items:center;gap:0.4rem"><span style="display:inline-block;width:10px;height:10px;background:var(--green);border-radius:50%"></span><span style="font-size:0.75rem;color:var(--green);font-family:'DM Mono',monospace;letter-spacing:0.1em">外部因素</span></div>
+  </div>
+
+  <div class="swot-grid">
+
+    <!-- S -->
+    <div class="swot-cell swot-S" style="--cell-color: var(--teal)">
+      <div class="swot-letter">S</div>
+      <div class="swot-header">
+        <div>
+          <div class="swot-badge">Strengths</div>
+          <div class="swot-title">優勢</div>
+        </div>
+      </div>
+      <ul class="swot-list">
+        <li>
+          <strong>色彩 IP 護城河</strong>
+          <span>2017 年引領彩色口罩革命，「我型‧我色」已成 Z 世代集體記憶，品牌色彩聯想強</span>
+        </li>
+        <li>
+          <strong>醫材品質信任基礎</strong>
+          <span>雙鋼印認證 + 77 年醫材 DNA，在後疫情時代「品質不妥協」的需求下有強競爭力</span>
+        </li>
+        <li>
+          <strong>多品牌生態完整</strong>
+          <span>口罩 / W博拭 / IKIGAI / WATERHIGH 覆蓋 Z 世代從外出防護到自我照顧的全場景</span>
+        </li>
+        <li>
+          <strong>ESG 先行者優勢</strong>
+          <span>永續包裝轉型、邊角料循環利用，已具備對話 Z 世代環保價值觀的真實故事</span>
+        </li>
+        <li>
+          <strong>IKIGAI 五感差異化</strong>
+          <span>腦波香氛系列切入 Z 世代 Me Time 趨勢，6 月新品上市節點具話題紅利</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- W -->
+    <div class="swot-cell swot-W" style="--cell-color: var(--pink)">
+      <div class="swot-letter">W</div>
+      <div class="swot-header">
+        <div>
+          <div class="swot-badge" style="background:var(--pink)">Weaknesses</div>
+          <div class="swot-title" style="color:var(--pink)">劣勢</div>
+        </div>
+      </div>
+      <ul class="swot-list" style="--cell-color: var(--pink)">
+        <li>
+          <strong>品牌老化感知風險</strong>
+          <span>1947 年創立的傳統醫材形象，若溝通不當易在 Z 世代眼中顯得「爸媽的品牌」</span>
+        </li>
+        <li>
+          <strong>IKIGAI / WATERHIGH 知名度不足</strong>
+          <span>新品牌在 Z 世代中的品牌認知度仍低，缺乏自發性分享的 KOC 族群基礎</span>
+        </li>
+        <li>
+          <strong>社群內容力待強化</strong>
+          <span>相較 DW / Laneige 等品牌，目前短影音內容量與創意度尚未達 Z 世代標準</span>
+        </li>
+        <li>
+          <strong>法規廣告限制</strong>
+          <span>醫療器材廣告規範嚴格，「療效字眼」禁止使用，限縮創意溝通空間與速度</span>
+        </li>
+        <li>
+          <strong>體驗場景缺乏</strong>
+          <span>目前以電商 / 藥局通路為主，缺乏能讓 Z 世代「值得拍」的實體品牌觸點</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- O -->
+    <div class="swot-cell swot-O" style="--cell-color: var(--green)">
+      <div class="swot-letter">O</div>
+      <div class="swot-header">
+        <div>
+          <div class="swot-badge" style="background:var(--green)">Opportunities</div>
+          <div class="swot-title" style="color:var(--green)">機會</div>
+        </div>
+      </div>
+      <ul class="swot-list" style="--cell-color: var(--green)">
+        <li>
+          <strong>心理健康意識浪潮</strong>
+          <span>Z 世代是台灣心理諮商需求最高的族群，「情緒照顧」產品品類正快速擴張</span>
+        </li>
+        <li>
+          <strong>ESG 消費需求上升</strong>
+          <span>64% Z 世代購買前查品牌 ESG 立場，永續品牌溢價空間持續擴大</span>
+        </li>
+        <li>
+          <strong>80 周年話題紅利</strong>
+          <span>2027 年品牌里程碑提供天然媒體話題，Z 世代對「品牌故事」有強烈好奇心</span>
+        </li>
+        <li>
+          <strong>體驗經濟爆發</strong>
+          <span>後疫情 Z 世代消費重心轉移至「可拍、可曬、可說」的線下沉浸式體驗</span>
+        </li>
+        <li>
+          <strong>補水 / 口腔護理品類白地</strong>
+          <span>WATERHIGH 與 IKIGAI 口腔護理切入 Z 世代日常保健未飽和市場，先發優勢強</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- T -->
+    <div class="swot-cell swot-T" style="--cell-color: var(--gold)">
+      <div class="swot-letter">T</div>
+      <div class="swot-header">
+        <div>
+          <div class="swot-badge" style="background:var(--gold)">Threats</div>
+          <div class="swot-title" style="color:var(--gold)">威脅</div>
+        </div>
+      </div>
+      <ul class="swot-list" style="--cell-color: var(--gold)">
+        <li>
+          <strong>彩色口罩競品湧入</strong>
+          <span>後疫情市場競品低價跟進，Z 世代「低忠誠度 + 高比價習慣」讓差異化壓力倍增</span>
+        </li>
+        <li>
+          <strong>注意力碎片化</strong>
+          <span>Z 世代平均注意力 8 秒，品牌若無法在短影音 3 秒內鉤住，觸及直接歸零</span>
+        </li>
+        <li>
+          <strong>國際美妝 / 保健品牌搶市</strong>
+          <span>Laneige、Dr. Wu 等具強大 Z 世代親和力的品牌正積極切入健康護理品類</span>
+        </li>
+        <li>
+          <strong>GenZ 反行銷免疫</strong>
+          <span>Z 世代對硬銷廣告高度不信任，傳統品牌曝光模式效率急速下滑</span>
+        </li>
+        <li>
+          <strong>ESG 洗綠反噬風險</strong>
+          <span>Z 世代對品牌漂綠（Greenwashing）高度警覺，永續承諾必須有具體可查的行動佐證</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PULL QUOTE ══════════════════════════════════ -->
+<div class="pull-quote">
+  <blockquote>
+    Z 世代不買產品，<br>他們買的是「你是誰」。<br>CSD 的色彩，就是他們說出自己的語言。
+  </blockquote>
+  <cite>— CSD LAB 策略定位核心洞察 / 2027 GenZ Initiative</cite>
+</div>
+
+<!-- ══ STRATEGY MATRIX ══════════════════════════════ -->
+<section class="section strategy-section">
+  <p class="section-label">SO / ST / WO / WT Strategy / 四象限策略矩陣</p>
+  <h2 class="section-title">策略<br>行動矩陣</h2>
+
+  <div class="strategy-grid">
+
+    <!-- SO -->
+    <div class="strategy-card" style="--card-accent: var(--teal); --card-bg: #0d2020">
+      <div class="strategy-type">
+        <div class="strategy-dot"></div>
+        <span class="strategy-type-label">SO｜優勢 × 機會 — 進攻型</span>
+      </div>
+      <h3 class="strategy-title">以色彩征服<br>情緒健康市場</h3>
+      <ul class="strategy-items">
+        <li>
+          <strong>「我的情緒保護色」體驗行銷</strong>
+          色彩工作坊結合心理測驗，讓 Z 世代用「選色」說出情緒，將口罩轉化為心理健康工具
+        </li>
+        <li>
+          <strong>IKIGAI × Me Time 儀式共鳴</strong>
+          腦波香氛 + 口腔護理打入 Z 世代「自我照顧」的每日儀式，建立情感依附
+        </li>
+        <li>
+          <strong>CSD LAB 快閃店製造話題</strong>
+          80 周年 × 沉浸式空間 = 自然引爆 UGC，讓 Z 世代主動成為品牌代言人
+        </li>
+        <li>
+          <strong>ESG 故事轉化購買信任</strong>
+          永續邊角料手作體驗 + 碳足跡透明化，精準命中 Z 世代環保消費決策
+        </li>
+      </ul>
+      <div class="strategy-sdg">
+        <span class="sdg-pill">SDG 3</span>
+        <span class="sdg-pill">SDG 4</span>
+        <span class="sdg-pill">體驗行銷</span>
+        <span class="sdg-pill">UGC 引爆</span>
+      </div>
+    </div>
+
+    <!-- ST -->
+    <div class="strategy-card" style="--card-accent: var(--pink); --card-bg: #200d14">
+      <div class="strategy-type">
+        <div class="strategy-dot"></div>
+        <span class="strategy-type-label">ST｜優勢 × 威脅 — 防禦型</span>
+      </div>
+      <h3 class="strategy-title">鞏固色彩護城河<br>提高換牌成本</h3>
+      <ul class="strategy-items">
+        <li>
+          <strong>限定色系季節快閃</strong>
+          每季推出限量色彩聯名（藝術家 / 設計師），強化「先搶先贏」的稀缺感，對抗低價競品
+        </li>
+        <li>
+          <strong>KOC 培育計畫</strong>
+          將工作坊重度參與者轉化為「CSD 色彩大使」，用真實 UGC 取代傳統廣告，繞過 Z 世代免疫屏障
+        </li>
+        <li>
+          <strong>品牌故事真實化</strong>
+          開放工廠參觀 / 工藝師直播，讓 Z 世代「親眼驗證」ESG 承諾，防堵漂綠批評
+        </li>
+        <li>
+          <strong>3 秒鉤子短影音策略</strong>
+          針對 TikTok / Reels 開發「色彩衝擊」系列素材，前 3 秒必須觸發情緒反應
+        </li>
+      </ul>
+      <div class="strategy-sdg">
+        <span class="sdg-pill">品牌護城河</span>
+        <span class="sdg-pill">KOC 策略</span>
+        <span class="sdg-pill">短影音</span>
+        <span class="sdg-pill">反洗綠</span>
+      </div>
+    </div>
+
+    <!-- WO -->
+    <div class="strategy-card" style="--card-accent: var(--green); --card-bg: #0d1e12">
+      <div class="strategy-type">
+        <div class="strategy-dot"></div>
+        <span class="strategy-type-label">WO｜劣勢 × 機會 — 轉化型</span>
+      </div>
+      <h3 class="strategy-title">用體驗重塑<br>品牌年輕感知</h3>
+      <ul class="strategy-items">
+        <li>
+          <strong>CSD LAB 快閃店重設品牌認知</strong>
+          沉浸式 5 Zone 空間讓 Z 世代重新「體驗」CSD，而非「想到」CSD，打破老牌印象
+        </li>
+        <li>
+          <strong>IKIGAI × WATERHIGH 品牌孵化加速</strong>
+          快閃店作為新品牌試水溫場域，蒐集 Z 世代即時反應，加速品牌認知形成
+        </li>
+        <li>
+          <strong>心理健康 × 藝術合作破圈</strong>
+          與插畫師、心理諮商師共創內容，切入 Z 世代「心理健康正常化」社群討論
+        </li>
+        <li>
+          <strong>廣字號前置申請拉長創意空間</strong>
+          提前 2 個月申請廣字號，在法規框架內極大化創意溝通可能，不讓法規成為瓶頸
+        </li>
+      </ul>
+      <div class="strategy-sdg">
+        <span class="sdg-pill">SDG 10</span>
+        <span class="sdg-pill">品牌年輕化</span>
+        <span class="sdg-pill">破圈合作</span>
+        <span class="sdg-pill">法規前置</span>
+      </div>
+    </div>
+
+    <!-- WT -->
+    <div class="strategy-card" style="--card-accent: var(--gold); --card-bg: #1e1500">
+      <div class="strategy-type">
+        <div class="strategy-dot"></div>
+        <span class="strategy-type-label">WT｜劣勢 × 威脅 — 守備型</span>
+      </div>
+      <h3 class="strategy-title">數據飛輪護航<br>長期品牌資產</h3>
+      <ul class="strategy-items">
+        <li>
+          <strong>第一方數據壁壘建立</strong>
+          CSD LAB PASS 電子會員卡蒐集 1 萬筆 Z 世代數據，形成不依賴第三方廣告的自有受眾池
+        </li>
+        <li>
+          <strong>訂閱制忠誠度鎖定</strong>
+          WATERHIGH 每月補水訂閱箱 + IKIGAI 儀式禮盒，用習慣黏住 Z 世代、提高流失成本
+        </li>
+        <li>
+          <strong>教育共創降低行銷依賴</strong>
+          與大學合作「健康美學課程」，用知識滲透建立深度品牌連結，降低廣告支出依存度
+        </li>
+        <li>
+          <strong>ESG 年報公開化</strong>
+          每年發布可量化 ESG 進度報告，預防 Z 世代「漂綠」批評，以透明化換取長期信任
+        </li>
+      </ul>
+      <div class="strategy-sdg">
+        <span class="sdg-pill">SDG 12</span>
+        <span class="sdg-pill">第一方數據</span>
+        <span class="sdg-pill">訂閱制</span>
+        <span class="sdg-pill">ESG 透明化</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PRIORITY ROADMAP ══════════════════════════════ -->
+<section class="section roadmap-section">
+  <p class="section-label">Priority Roadmap / Z 世代策略優先路線圖</p>
+  <h2 class="section-title">行動<br>優先順序</h2>
+
+  <div class="roadmap-timeline">
+
+    <div class="roadmap-item" style="--item-color: var(--teal)">
+      <div class="roadmap-time">M1–M2</div>
+      <div class="roadmap-line-wrap">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-connector"></div>
+      </div>
+      <div class="roadmap-content">
+        <div class="roadmap-phase">Phase 1 ／ 基礎建設期</div>
+        <div class="roadmap-title">建立 Z 世代數位橋頭堡</div>
+        <div class="roadmap-body">
+          重新梳理品牌 IG / TikTok 內容策略，招募首批 CSD 色彩大使（KOC），開發「情緒色彩診斷」互動 Landing Page，同步啟動廣字號申請流程。目標：建立 Z 世代社群聆聽機制，確認最高共鳴的情緒色彩主題。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">社群策略</span>
+          <span class="roadmap-tag">KOC 招募</span>
+          <span class="roadmap-tag">Landing Page</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item" style="--item-color: var(--pink)">
+      <div class="roadmap-time">M3–M4</div>
+      <div class="roadmap-line-wrap">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-connector"></div>
+      </div>
+      <div class="roadmap-content">
+        <div class="roadmap-phase">Phase 2 ／ 品牌預熱期</div>
+        <div class="roadmap-title">Z 世代前導體驗與話題引爆</div>
+        <div class="roadmap-body">
+          在 5 所大學校園舉辦小型「我的情緒保護色」快閃工作坊，同步發布 IKIGAI 腦波香氛 6 月新品預熱內容。啟動 KOL 合作（美妝 × 心理健康 × 永續類），製作 80 周年品牌形象短影音。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">校園快閃</span>
+          <span class="roadmap-tag">KOL 合作</span>
+          <span class="roadmap-tag">新品預熱</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item" style="--item-color: var(--gold)">
+      <div class="roadmap-time">M5–M8</div>
+      <div class="roadmap-line-wrap">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-connector"></div>
+      </div>
+      <div class="roadmap-content">
+        <div class="roadmap-phase">Phase 3 ／ 主活動高峰期</div>
+        <div class="roadmap-title">CSD LAB 快閃店 × 全面體驗爆發</div>
+        <div class="roadmap-body">
+          華山 1914 快閃店開幕（2027/09），5 大 Zone 沉浸體驗、每日 8 場色彩工作坊、WATERHIGH 吧台體驗、IKIGAI Studio 全面運行。#我的情緒保護色 打卡挑戰同步爆發，目標 5,000+ UGC 貼文。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">快閃店主活動</span>
+          <span class="roadmap-tag">UGC 引爆</span>
+          <span class="roadmap-tag">數據蒐集</span>
+          <span class="roadmap-tag">PR 聲量</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item" style="--item-color: var(--green)">
+      <div class="roadmap-time">M9–M12</div>
+      <div class="roadmap-line-wrap">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-connector"></div>
+      </div>
+      <div class="roadmap-content">
+        <div class="roadmap-phase">Phase 4 ／ 數據轉化期</div>
+        <div class="roadmap-title">第一方數據再行銷 × 品牌長效延伸</div>
+        <div class="roadmap-body">
+          運用快閃店蒐集的 1 萬筆 Z 世代數據，執行分群 Email 自動化流程、LINE OA 推播、Meta 自訂受眾廣告。啟動 WATERHIGH 訂閱制試行、CSD 色彩大使升等計畫，將體驗轉化為長期品牌資產。
+        </div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">再行銷閉環</span>
+          <span class="roadmap-tag">訂閱制啟動</span>
+          <span class="roadmap-tag">大使升等</span>
+          <span class="roadmap-tag">ESG 報告</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════ -->
+<footer>
+  <p>CSD × <span>Health in Style</span> ／ Z 世代 SWOT 策略矩陣 ／ 2027</p>
+  <p>SDG 3 ／ SDG 4 ／ SDG 10 ／ SDG 12 ／ SDG 13 ／ <span>CSD LAB 快閃店提案</span></p>
+</footer>
+
+<script>
+  // Intersection Observer for scroll animations
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        // stagger siblings
+        const siblings = e.target.parentElement.querySelectorAll('.insight-item, .profile-card, .swot-cell, .strategy-card, .roadmap-item, .section-label, .section-title');
+        let delay = 0;
+        siblings.forEach(sib => {
+          if (sib === e.target) {
+            setTimeout(() => sib.classList.add('visible'), delay);
+          }
+          delay += 80;
+        });
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.insight-item, .profile-card, .swot-cell, .strategy-card, .roadmap-item, .section-label, .section-title').forEach(el => obs.observe(el));
+
+  // Cursor effect on SWOT cells
+  document.querySelectorAll('.swot-cell').forEach(cell => {
+    cell.addEventListener('mousemove', e => {
+      const r = cell.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width - 0.5) * 8;
+      const y = ((e.clientY - r.top) / r.height - 0.5) * 8;
+      cell.style.transform = `perspective(800px) rotateX(${-y}deg) rotateY(${x}deg) scale(1.01)`;
+    });
+    cell.addEventListener('mouseleave', () => {
+      cell.style.transform = '';
+      cell.style.transition = 'transform 0.4s ease';
+    });
+  });
+</script>
+</body>
+</html>
